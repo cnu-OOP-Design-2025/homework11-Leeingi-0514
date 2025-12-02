@@ -41,9 +41,16 @@ void doTest3() {
     players.push_back(make_shared<Wizard>());
     players.push_back(make_shared<Archer>());
     /* TODO */
-    // Zombie 캐릭터를 players에 추가
-    // Skeleton 캐릭터를 players에 추가
-    // Lich 캐릭터를 players에 추가
+    shared_ptr<Zombie> zombie(new Zombie());
+    shared_ptr<UndeadAdapter> zombieAdapter(new UndeadAdapter(zombie));
+    shared_ptr<Lich> lich(new Lich());
+    shared_ptr<UndeadAdapter> lichAdapter(new UndeadAdapter(lich));
+    shared_ptr<Skeleton> skeleton(new Skeleton());
+    shared_ptr<UndeadAdapter> skeletonAdapter(new UndeadAdapter(skeleton));
+
+    players.push_back(zombieAdapter);
+    players.push_back(lichAdapter);
+    players.push_back(skeletonAdapter);
 
 
     for(auto player: players){

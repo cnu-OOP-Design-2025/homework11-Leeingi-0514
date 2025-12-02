@@ -13,14 +13,14 @@ public:
 
     // 복사 생성자
     my_shared_ptr(const my_shared_ptr& other) : ptr(other.ptr), refCount(other.refCount) {
-        /* TODO */
+        (*refCount)++;
     }
 
     // 대입 연산자
     my_shared_ptr& operator=(const my_shared_ptr& other) {
         if (this != &other) {
-            release();
-            /* TODO */
+            this = my_shared_ptr(other);
+            other->ptr = nullptr;
         }
         return *this;
     }
@@ -30,7 +30,12 @@ public:
 
     // 참조 해제
     void release() {
-        /* TODO */
+        (*refCount)--;
+        if(*refCount == 0) {
+            delete ptr;
+        }
+        refCount = nullptr;
+        ptr = nullptr;
     }
 
     // 접근 연산자
@@ -71,13 +76,14 @@ public:
 
     // 이동 생성자: other가 관리하는 자원의 소유권을 가져옴 
     my_unique_ptr(my_unique_ptr&& other) noexcept: ptr(nullptr) {
-        /* TODO */
+        ptr = other.release();
     }
 
     // 이동 대입 연산자: 기존 unique_ptr이 관리하던 자원을 해제하고, 다른 unique_ptr가 관리하는 자원의 소유권을 가져옴 
     my_unique_ptr& operator=(my_unique_ptr&& other) noexcept {
         if (this != &other) {
-            /* TODO */
+            reset();
+            ptr = other.release();
         }
         return *this;
     }
@@ -91,8 +97,9 @@ public:
 
     // release() 메서드: 내부 포인터를 반환하고, ptr은 nullptr로 초기화
     T* release() {
-        /* TODO */
-        return nullptr;
+        T* aptr = ptr;
+        ptr = nullptr;
+        return aptr;
     }
 
     // reset() 메서드
