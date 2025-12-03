@@ -49,8 +49,8 @@ void doTest3() {
     shared_ptr<UndeadAdapter> skeletonAdapter(new UndeadAdapter(skeleton));
 
     players.push_back(zombieAdapter);
-    players.push_back(lichAdapter);
     players.push_back(skeletonAdapter);
+    players.push_back(lichAdapter);
 
 
     for(auto player: players){
@@ -60,7 +60,9 @@ void doTest3() {
         equip_test3(player);
     }
     cout << "-------------------------------------------------------------" << endl;
-
+    for(auto player: players){
+        player.reset();
+    }
 }
 
 struct Student{
